@@ -15,17 +15,17 @@ $browser=Mimini::open();
 $browser->get($path);
 //echo $browser->getContent();
 // Create a new cURL resource 
-$ch = curl_init(); 
+//$ch = curl_init(); 
  
 // Set URL and other appropriate options 
-curl_setopt($ch, CURLOPT_URL, $browser->getContent()); //$apiURL); 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+//curl_setopt($ch, CURLOPT_URL, $browser->getContent()); //$apiURL); 
+//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
  
 // Execute and get response from API 
-$website_content = curl_exec($ch); 
+$website_content = $browser->getContent();//curl_exec($ch); 
  
 // Close cURL resource 
-curl_close($ch); 
+//curl_close($ch); 
     
     // Load HTML to DOM Object
     $dom = new DOMDocument();
