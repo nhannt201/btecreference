@@ -55,6 +55,13 @@ $website_content = $browser->getContent();//curl_exec($ch);
 				$author = $metas->item($i);
 					if ($author->getAttribute('property') == 'article:author') {
 						$tacgia = $author->getAttribute('content');
+					} else {
+						for ($i = 0; $i < $metas->length; $i ++) {
+								$author = $metas->item($i);
+									if ($author->getAttribute('name') == 'sailthru.author') {
+										$tacgia = $author->getAttribute('content');
+									}
+							}
 					}
 			}
 		}
@@ -77,7 +84,33 @@ $website_content = $browser->getContent();//curl_exec($ch);
 			if ($published_time == "") {
 				$published_time = "n.d";
 			}
-        }
+        } else {
+			 for ($i = 0; $i < $metas->length; $i ++) {
+					$sname = $metas->item($i);
+					if ($sname->getAttribute('name') == 'sailthru.date') {
+						$published_time = $sname->getAttribute('content');
+						$published_time = date( "Y", strtotime( $published_time ) );
+						if ($published_time == "") {
+							$published_time = "n.d";
+						}
+					} else {
+						//Cach lay date time public kieu khac
+						/**$xpath = new DOMXpath($dom);
+						$jsonScripts = $xpath->query( '//script[@type="application/ld+json"]' );
+						$json = trim( $jsonScripts->item(1)->nodeValue );
+
+						$data = json_decode( $json, true );
+						//print_r($data);
+						// you can now use this array to query the data you want
+						//$published_time = substr( $data['datePublished'], 0, 4);
+						//break;
+						$u = $data['datePublished'];
+		
+						//$published_time = $datePublished;//date('Y', strtotime($datePublished));
+						//Ket thuc lay**/
+					}
+				}
+		}
     }
     
     // Parse DOM to get Images
