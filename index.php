@@ -19,6 +19,8 @@ if($headers && strpos( $headers[0], '200')) {
  require_once 'mimini.php';
 $browser=Mimini::open();
 $browser->get($path);
+$title = $browser->getTitle();
+//print_r($browser);
 //echo $browser->getContent();
 // Create a new cURL resource 
 //$ch = curl_init(); 
@@ -38,8 +40,8 @@ $website_content = $browser->getContent();//curl_exec($ch);
     @$dom->loadHTML($website_content);
     
     // Parse DOM to get Title
-    $nodes = $dom->getElementsByTagName('title');
-    $title = $nodes->item(0)->nodeValue;
+   // $nodes = $dom->getElementsByTagName('title');
+    //$title = $nodes->item(0)->nodeValue;
 
     // Parse DOM to get Meta Description
     $metas = $dom->getElementsByTagName('meta');
