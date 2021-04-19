@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET["url"]) && filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
     
-$path = $_GET["url"];
+$path = urldecode($_GET["url"]);
      
 /**$queryString = http_build_query([ 
     'access_key' => '05a2190b974c4b6c984ba2b7a81bd9d3', 
@@ -10,6 +10,12 @@ $path = $_GET["url"];
  
 // API URL with query string 
 $apiURL = sprintf('%s?%s', 'http://api.scrapestack.com/scrape', $queryString); **/
+$headers = @get_headers($path);
+  
+// Use condition to check the existence of URL
+if($headers && strpos( $headers[0], '200')) {
+  //  $status = "URL Exist";
+
  require_once 'mimini.php';
 $browser=Mimini::open();
 $browser->get($path);
@@ -34,7 +40,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
     // Parse DOM to get Title
     $nodes = $dom->getElementsByTagName('title');
     $title = $nodes->item(0)->nodeValue;
-    
+
     // Parse DOM to get Meta Description
     $metas = $dom->getElementsByTagName('meta');
    // $body = "";
@@ -135,6 +141,19 @@ $website_content = $browser->getContent();//curl_exec($ch);
 		'url' => $path,
 		'domain' =>  $parse['host']
     );
+	
+	}
+else {
+      $output = array(
+        'title' => null,
+		'auhtor' => null,
+		'sitename' => null,
+		'published_time' => null,
+		'url' => $path,
+		'domain' =>  $parse['host']
+    );
+}
+
 	//print_r($output);
     echo json_encode($output); 
 	//echo $data;
