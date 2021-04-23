@@ -10,12 +10,12 @@ $path = urldecode($_GET["url"]);
  
 // API URL with query string 
 $apiURL = sprintf('%s?%s', 'http://api.scrapestack.com/scrape', $queryString); **/
-$headers = @get_headers($path);
+//$headers = @get_headers($path);
   
 // Use condition to check the existence of URL
-if($headers && strpos( $headers[0], '200')) {
+//if($headers && strpos( $headers[0], '200')) {
   //  $status = "URL Exist";
-
+if (urlExists($path)) {
  require_once 'mimini.php';
 $browser=Mimini::open();
 $browser->get($path);
@@ -141,7 +141,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
 		'url' => $path,
 		'domain' =>  $parse['host']
     );
-	
+
 	}
 else {
       $output = array(
@@ -157,5 +157,32 @@ else {
 	//print_r($output);
     echo json_encode($output); 
 	//echo $data;
+}
+
+
+function get_http_response_code($theURL) {
+    $headers = @get_headers($theURL);
+    return substr($headers[0], 9, 3);
+}
+/**
+ * Check that given URL is valid and exists.
+ * @param string $url URL to check
+ * @return bool TRUE when valid | FALSE anyway
+ */
+function urlExists ( $url ) {
+    // Remove all illegal characters from a url
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+
+    // Validate URI
+    if (filter_var($url, FILTER_VALIDATE_URL) === FALSE
+        // check only for http/https schemes.
+        || !in_array(strtolower(parse_url($url, PHP_URL_SCHEME)), ['http','https'], true )
+    ) {
+        return false;
+    }
+
+    // Check that URL exists
+    $file_headers = @get_headers($url);
+    return !(!$file_headers || $file_headers[0] === 'HTTP/1.1 404 Not Found');
 }
 ?>
