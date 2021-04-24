@@ -35,7 +35,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
     
     // Load HTML to DOM Object
     $dom = new DOMDocument();
-    @$dom->loadHTML($website_content);
+    @$dom->loadHTML("<!DOCTYPE html><meta charset='UTF-8'>".$website_content);
     
     // Parse DOM to get Title
     $nodes = $dom->getElementsByTagName('title');
