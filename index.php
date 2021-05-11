@@ -2,7 +2,7 @@
 if (isset($_GET["url"]) && filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
     
 $path = urldecode($_GET["url"]);
-     
+     $jsons;
 /**$queryString = http_build_query([ 
     'access_key' => '05a2190b974c4b6c984ba2b7a81bd9d3', 
     'url' => $path , 
@@ -43,6 +43,16 @@ $website_content = $browser->getContent();//curl_exec($ch);
 
     // Parse DOM to get Meta Description
     $metas = $dom->getElementsByTagName('meta');
+	
+	$scripts = $dom->getElementsByTagName('script');
+	//found application/ld+json
+	for ($i = 0; $i < $scripts->length; $i ++) {
+					$scripts_name = $scripts->item($i);
+					
+					if ($scripts_name->getAttribute('type') == 'application/ld+json') {
+						 $jsons = json_decode($scripts_name->nodeValue, true);
+					}
+				}
    // $body = "";
    /** for ($i = 0; $i < $metas->length; $i ++) {
         $meta = $metas->item($i);
@@ -60,7 +70,8 @@ $website_content = $browser->getContent();//curl_exec($ch);
             $tacgia = $author->getAttribute('content');
         }
     }
-				if (strlen($tacgia) > 0) {} else {
+	//Xu ly truong hop khac neu khong lay duoc ten tg
+			if (strlen($tacgia) > 0) {} else {
 				for ($i = 0; $i < $metas->length; $i ++) {
 				$author = $metas->item($i);
 					if ($author->getAttribute('property') == 'article:author') {
@@ -75,6 +86,15 @@ $website_content = $browser->getContent();//curl_exec($ch);
 					}
 				}
 			}
+			
+			if (strlen($tacgia) > 0) {} else {
+				if (!empty($jsons)) {
+					 $tacgia = ($jsons['author']['name']);
+				}	
+			}
+	//Ket thuc xu ly
+
+
 
 	$site_name = "";
     for ($i = 0; $i < $metas->length; $i ++) {
@@ -90,37 +110,16 @@ $website_content = $browser->getContent();//curl_exec($ch);
         if ($sname->getAttribute('property') == 'article:published_time') {
             $published_time = $sname->getAttribute('content');
 			$published_time = date( "Y", strtotime( $published_time ) );
-			if ($published_time == "") {
+		}
+	}
+	if (strlen($published_time) > 0) {} else {
+			if (!empty($jsons)) {
+				$published_time = ($jsons['datePublished']);
+				$published_time = date( "Y", strtotime( $published_time ) );
+			}	else {
 				$published_time = "n.d";
 			}
-        } else {
-			 for ($i = 0; $i < $metas->length; $i ++) {
-					$sname = $metas->item($i);
-					if ($sname->getAttribute('name') == 'sailthru.date') {
-						$published_time = $sname->getAttribute('content');
-						$published_time = date( "Y", strtotime( $published_time ) );
-						if ($published_time == "") {
-							$published_time = "n.d";
-						}
-					} else {
-						//Cach lay date time public kieu khac
-						/**$xpath = new DOMXpath($dom);
-						$jsonScripts = $xpath->query( '//script[@type="application/ld+json"]' );
-						$json = trim( $jsonScripts->item(1)->nodeValue );
-
-						$data = json_decode( $json, true );
-						//print_r($data);
-						// you can now use this array to query the data you want
-						//$published_time = substr( $data['datePublished'], 0, 4);
-						//break;
-						$u = $data['datePublished'];
-		
-						//$published_time = $datePublished;//date('Y', strtotime($datePublished));
-						//Ket thuc lay**/
-					}
-				}
-		}
-    }
+	}
     
     // Parse DOM to get Images
    /** $image_urls = array();
