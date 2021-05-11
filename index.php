@@ -115,6 +115,12 @@ $website_content = $browser->getContent();//curl_exec($ch);
         if ($sname->getAttribute('property') == 'article:published_time') {
             $published_time = $sname->getAttribute('content');
 			$published_time = date( "Y", strtotime( $published_time ) );
+		} else if ($sname->getAttribute('property') == 'published_time') {
+            $published_time = $sname->getAttribute('content');
+			$published_time = date( "Y", strtotime( $published_time ) );
+		} else  if ($sname->getAttribute('itemprop') == 'datePublished') {
+            $published_time = $sname->getAttribute('content');
+			$published_time = date( "Y", strtotime( $published_time ) );
 		}
 	}
 	if (strlen($published_time) > 0) {} else {
