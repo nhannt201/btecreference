@@ -44,20 +44,24 @@ $website_content = $browser->getContent();//curl_exec($ch);
     // Parse DOM to get Meta Description
     $metas = $dom->getElementsByTagName('meta');
    // $body = "";
-    /**for ($i = 0; $i < $metas->length; $i ++) {
+   /** for ($i = 0; $i < $metas->length; $i ++) {
         $meta = $metas->item($i);
-        if ($meta->getAttribute('name') == 'description') {
-            $body = $meta->getAttribute('content');
+		//print_r($meta->getAttribute('name'));
+        if ($meta->getAttribute('name') == 'author') {
+           echo $meta->getAttribute('content');
         }
     }**/
-	
+		//var_dump($metas)."<hr>";
     $tacgia = "";
     for ($i = 0; $i < $metas->length; $i ++) {
         $author = $metas->item($i);
+	
         if ($author->getAttribute('name') == 'author') {
             $tacgia = $author->getAttribute('content');
-        } else {
-			for ($i = 0; $i < $metas->length; $i ++) {
+        }
+    }
+				if (strlen($tacgia) > 0) {} else {
+				for ($i = 0; $i < $metas->length; $i ++) {
 				$author = $metas->item($i);
 					if ($author->getAttribute('property') == 'article:author') {
 						$tacgia = $author->getAttribute('content');
@@ -69,9 +73,8 @@ $website_content = $browser->getContent();//curl_exec($ch);
 									}
 							}
 					}
+				}
 			}
-		}
-    }
 
 	$site_name = "";
     for ($i = 0; $i < $metas->length; $i ++) {
