@@ -89,7 +89,12 @@ $website_content = $browser->getContent();//curl_exec($ch);
 			
 			if (strlen($tacgia) > 0) {} else {
 				if (!empty($jsons)) {
-					 $tacgia = ($jsons['author']['name']);
+					if (!empty(($jsons['author']['name']))){
+						$tacgia = ($jsons['author']['name']);
+					}
+					if (!empty(($jsons['@graph'][3]['name']))){
+						$tacgia = ($jsons['@graph'][3]['name']);
+					}
 				}	
 			}
 	//Ket thuc xu ly
@@ -114,8 +119,15 @@ $website_content = $browser->getContent();//curl_exec($ch);
 	}
 	if (strlen($published_time) > 0) {} else {
 			if (!empty($jsons)) {
-				$published_time = ($jsons['datePublished']);
-				$published_time = date( "Y", strtotime( $published_time ) );
+					if (!empty(($jsons['datePublished']))){
+						$published_time = ($jsons['datePublished']);
+						$published_time = date( "Y", strtotime( $published_time ) );
+					} else if (!empty(($jsons['@graph'][2]['datePublished']))){
+						$published_time = ($jsons['@graph'][2]['datePublished']);
+						$published_time = date( "Y", strtotime( $published_time ) );
+					} else {
+						$published_time = "n.d";
+					}
 			}	else {
 				$published_time = "n.d";
 			}
