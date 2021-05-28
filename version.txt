@@ -1,1 +1,1 @@
-1.0.0.4|https://github.com/sunstudiodev/QuickReference/releases/download/install_4/QuickReferenceSetup_1.0.0.4.exe
+1.0.0.5|https://github.com/sunstudiodev/QuickReference/releases/download/install_5/QuickReferenceSetup_1.0.0.5.exe
