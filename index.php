@@ -1,7 +1,7 @@
 <?php
-if (isset($_GET["url"]) && filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
-    
-$path = urldecode($_GET["url"]);
+if (isset($_GET["url"]) ) { //&& filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
+    $urlck = ngoaile($_GET["url"]);
+$path = urldecode($urlck);
      $jsons;
 /**$queryString = http_build_query([ 
     'access_key' => '05a2190b974c4b6c984ba2b7a81bd9d3', 
@@ -66,7 +66,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
     for ($i = 0; $i < $metas->length; $i ++) {
         $author = $metas->item($i);
 	
-        if ($author->getAttribute('name') == 'author') {
+        if (($author->getAttribute('name') == 'author') || ($author->getAttribute('name') == 'citation_author')) {
             $tacgia = $author->getAttribute('content');
         }
     }
@@ -204,5 +204,14 @@ function urlExists ( $url ) {
     // Check that URL exists
     $file_headers = @get_headers($url);
     return !(!$file_headers || $file_headers[0] === 'HTTP/1.1 404 Not Found');
+}
+
+function ngoaile($url) {
+	if (strpos($url, 'www.academia.edu')) {
+		$urln = explode('/', $url);
+		return 'https://www.academia.edu/'.$urln[3].'/';
+	} else {
+			return $url;
+	}
 }
 ?>
