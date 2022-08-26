@@ -176,9 +176,9 @@ else {
 
 	//print_r($output);
     echo json_encode($output); 
-	
+	$date_today = date('m/d/Y h:i:s a', time());
 	// post url to Firebase start from 26/06/2022
-	  $data_url = '{"path": "'.$path.'"}';
+	  $data_url = '{"path": "'.$path.'", "time": "'.$date_today.'"}';
 
 	    $url = "https://quickreference-50ae2-default-rtdb.asia-southeast1.firebasedatabase.app/urlGet.json";
 	    $ch = curl_init();
