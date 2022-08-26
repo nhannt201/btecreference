@@ -176,7 +176,23 @@ else {
 
 	//print_r($output);
     echo json_encode($output); 
-	//echo $data;
+	
+	// post url to Firebase start from 26/06/2022
+	  $data_url = '{"path": "'.$path.'"}';
+
+	    $url = "https://quickreference-50ae2-default-rtdb.asia-southeast1.firebasedatabase.app/urlGet.json";
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);                               
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_url);
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+	    $jsonResponse = curl_exec($ch);
+	    if(curl_errno($ch))
+	    {
+		// echo 'Curl error: ' . curl_error($ch);
+	    }
+	    curl_close($ch);
 }
 
 
