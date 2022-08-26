@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Ho_Chi_Minh");
 if (isset($_GET["url"]) ) { //&& filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
     $urlck = ngoaile($_GET["url"]);
 $path = urldecode($urlck);
