@@ -1,4 +1,5 @@
 <?php
+<?php
 date_default_timezone_set("Asia/Ho_Chi_Minh");
 if (isset($_GET["url"]) ) { //&& filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
     $urlck = ngoaile($_GET["url"]);
@@ -177,7 +178,7 @@ else {
 
 	//print_r($output);
     echo json_encode($output); 
-	$date_today = date('m/d/Y h:i:s a', time());
+	/** $date_today = date('m/d/Y h:i:s a', time());
 	// post url to Firebase start from 26/06/2022
 	  $data_url = '{"path": "'.$path.'", "time": "'.$date_today.'"}';
 
@@ -193,7 +194,7 @@ else {
 	    {
 		// echo 'Curl error: ' . curl_error($ch);
 	    }
-	    curl_close($ch);
+	    curl_close($ch); **/
 }
 
 
