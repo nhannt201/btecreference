@@ -1,37 +1,19 @@
 <?php
-if (isset($_GET["url"]) ) { //&& filter_var($_GET["url"], FILTER_VALIDATE_URL)) {
+header('Access-Control-Allow-Origin: *');
+
+if (isset($_GET["url"]) ) { 
     $urlck = ngoaile($_GET["url"]);
 $path = urldecode($urlck);
      $jsons;
-/**$queryString = http_build_query([ 
-    'access_key' => '05a2190b974c4b6c984ba2b7a81bd9d3', 
-    'url' => $path , 
-]); 
- 
-// API URL with query string 
-$apiURL = sprintf('%s?%s', 'http://api.scrapestack.com/scrape', $queryString); **/
-//$headers = @get_headers($path);
-  
-// Use condition to check the existence of URL
-//if($headers && strpos( $headers[0], '200')) {
-  //  $status = "URL Exist";
+
 if (urlExists($path)) {
  require_once 'mimini.php';
 $browser=Mimini::open();
 $browser->get($path);
-//echo $browser->getContent();
-// Create a new cURL resource 
-//$ch = curl_init(); 
- 
-// Set URL and other appropriate options 
-//curl_setopt($ch, CURLOPT_URL, $browser->getContent()); //$apiURL); 
-//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
  
 // Execute and get response from API 
 $website_content = $browser->getContent();//curl_exec($ch); 
  
-// Close cURL resource 
-//curl_close($ch); 
     
     // Load HTML to DOM Object
     $dom = new DOMDocument();
@@ -53,15 +35,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
 						 $jsons = json_decode($scripts_name->nodeValue, true);
 					}
 				}
-   // $body = "";
-   /** for ($i = 0; $i < $metas->length; $i ++) {
-        $meta = $metas->item($i);
-		//print_r($meta->getAttribute('name'));
-        if ($meta->getAttribute('name') == 'author') {
-           echo $meta->getAttribute('content');
-        }
-    }**/
-		//var_dump($metas)."<hr>";
+
     $tacgia = "";
     for ($i = 0; $i < $metas->length; $i ++) {
         $author = $metas->item($i);
@@ -140,17 +114,7 @@ $website_content = $browser->getContent();//curl_exec($ch);
 	}
     
     // Parse DOM to get Images
-   /** $image_urls = array();
-    $images = $dom->getElementsByTagName('img');
-     
-     for ($i = 0; $i < $images->length; $i ++) {
-         $image = $images->item($i);
-         $src = $image->getAttribute('src');
-         
-         if(filter_var($src, FILTER_VALIDATE_URL)) {
-             $image_src[] = $src;
-         }
-     }**/
+  
     $parse = parse_url($path);
 
     $output = array(
@@ -174,25 +138,8 @@ else {
     );
 }
 
-	//print_r($output);
     echo json_encode($output); 
-	/** $date_today = date('m/d/Y h:i:s a', time());
-	// post url to Firebase start from 26/06/2022
-	  $data_url = '{"path": "'.$path.'", "time": "'.$date_today.'"}';
-
-	    $url = "https://quickreference-50ae2-default-rtdb.asia-southeast1.firebasedatabase.app/urlGet.json";
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);                               
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_url);
-	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
-	    $jsonResponse = curl_exec($ch);
-	    if(curl_errno($ch))
-	    {
-		// echo 'Curl error: ' . curl_error($ch);
-	    }
-	    curl_close($ch); **/
+	
 }
 
 
